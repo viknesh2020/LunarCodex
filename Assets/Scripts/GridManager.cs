@@ -12,18 +12,15 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
    private List<GameObject> _cards = new List<GameObject>();
    public void SetGridMatrix(int rows, int columns)
    {
-      Debug.Log($"SetGridMatrix: rows {rows}, columns {columns}");
+      float xMid = (columns - 1) * padding * 0.5f;
+      float yMid = (rows - 1) * padding * 0.5f;
 
-      float halfLength = (columns - 1) * padding * 0.5f;
-      float halfHeight = (rows - 1) * padding * 0.5f;
-
-      for (int row = 0; row < rows; row++)
+      for (int r = 0; r < rows; r++)
       {
-         for (int col = 0; col < columns; col++)
+         for (int c = 0; c < columns; c++)
          {
             GameObject newCard = Instantiate(cardGo, gridParent);
-            newCard.transform.localPosition = new Vector3(col * padding - halfLength, row * padding - halfHeight, 0);
-            
+            newCard.transform.localPosition = new Vector3(c * padding - xMid, r * padding - yMid, 0);
             _cards.Add(newCard);
          }
       }
