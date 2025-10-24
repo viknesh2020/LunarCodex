@@ -26,6 +26,8 @@ public class LevelMenuUIItem : MonoBehaviour
       int columns = int.Parse(columnText.text);
       
       GridManager.Instance.SetGridMatrix(rows, columns);
+      CardManager.Instance.rows = rows;
+      CardManager.Instance.columns = columns;
    }
 
    private void OnDisable()=> _thisButton.onClick.RemoveListener(SetGridDataForGame);

@@ -9,29 +9,29 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
    [Range(0.1f, 2f)]
    [SerializeField] private float padding;
    
-   private List<GameObject> _cards = new List<GameObject>();
+   
    public void SetGridMatrix(int rows, int columns)
    {
       float xMid = (columns - 1) * padding * 0.5f;
       float yMid = (rows - 1) * padding * 0.5f;
+      
+      int numberOfPairs = (rows * columns)/2;
+      List<int> cardValuesList = CardManager.Instance.GeneratePairedCardValues(numberOfPairs);
 
       for (int r = 0; r < rows; r++)
       {
          for (int c = 0; c < columns; c++)
          {
+            int shuffledIndex = r * columns + c;
+            if(shuffledIndex >=cardValuesList.Count) break;
+            
             GameObject newCard = Instantiate(cardGo, gridParent);
             newCard.transform.localPosition = new Vector3(c * padding - xMid, r * padding - yMid, 0);
-            _cards.Add(newCard);
+            CardManager.Instance.cards.Add(newCard);
+            
+            CardComponent cardComponent = newCard.GetComponent<CardComponent>();
+            cardComponent.SetCardValue(cardValuesList[shuffledIndex]);
          }
       }
-   }
-
-   public void DestroyCards()
-   {
-      foreach(GameObject card in _cards) 
-      {
-         Destroy(card);
-      }
-      _cards.Clear();
    }
 }

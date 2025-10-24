@@ -32,6 +32,7 @@ public class CardComponent : MonoBehaviour
     {
         if(isTurned) return;
         isTurned = true;
+        CardManager.Instance.OnCardTapped(this);
         AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
     }
 

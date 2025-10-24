@@ -77,4 +77,5 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    {
       Initialize.Instance.ProceedToGame();
    }
+   
 }

@@ -38,6 +38,6 @@ public class Initialize : MonoBehaviourSingleton<Initialize>
     {
         gameMenu.SetActive(false);
         levelMenu.SetActive(true);
-        GridManager.Instance.DestroyCards();
+        CardManager.Instance.DestroyCards();
     }
 }
