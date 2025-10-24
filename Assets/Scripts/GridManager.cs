@@ -32,5 +32,6 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
             cardComponent.SetCardValue(cardValuesList[shuffledIndex]);
          }
       }
+      CardManager.Instance.SetTotalCardsCount();
    }
 }

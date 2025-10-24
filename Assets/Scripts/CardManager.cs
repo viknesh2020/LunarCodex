@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
+
 public class CardManager : MonoBehaviourSingleton<CardManager>
 {
     public List<GameObject> cards = new List<GameObject>();
@@ -21,7 +24,13 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
     private CardComponent lastMatchedCard = null;
     private int score = 0;
     private int comboCount = 0;
-    
+    private int cardCount = 0;
+
+    public void SetTotalCardsCount()
+    {
+        cardCount = cards.Count;
+    }
+
     public void DestroyCards()
     {
         foreach(GameObject card in cards) 
@@ -106,7 +115,14 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
     {
         card1.GetComponent<CardComponent>().CardMatched();
         card2.GetComponent<CardComponent>().CardMatched();
+        
+        cardCount = cardCount-2;
 
+        if (cardCount <= 0)
+        {
+            Debug.Log("All cards have been flipped");
+        }
+        
         int currentMatchScore = baseMatchScore;
 
         if (lastMatchedCard != null)
