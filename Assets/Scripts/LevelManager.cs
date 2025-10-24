@@ -14,6 +14,8 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    public Button proceedToGame;
    
    private List<Button> levelUICardButtons = new List<Button>();
+   private int currentRows;
+   private int currentColumns;
 
    private void Awake()
    {
@@ -54,28 +56,16 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
          levelUICardButtons.Add(levelMenuCard.GetComponent<Button>());
       }
    }
-
-   /*public void SelectLevelUICard()
-   {
-      DeselectLevelUICard(); //Deselect every UI cards before selection one.
-      foreach (var btn in levelUICardImages)
-      {
-         var selectedColor = btn.colors.selectedColor;
-         btn.GetComponent<Image>().color = selectedColor;
-      }
-   }
-
-   public void DeselectLevelUICard()
-   {
-      foreach (var btn in levelUICardImages)
-      {
-         var deselectColor = btn.colors.normalColor;
-         btn.GetComponent<Image>().color = deselectColor;
-      }
-   }*/
+   
    private void SwitchToGame()
    {
       Initialize.Instance.ProceedToGame();
+      GridManager.Instance.SetGridMatrix(currentRows, currentColumns);
+   }
+   public void SetCurrentRowsAndColumns(int rows, int columns)
+   {
+      currentRows = rows;
+      currentColumns = columns;
    }
    
 }

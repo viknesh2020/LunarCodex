@@ -9,7 +9,6 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
    [Range(0.1f, 2f)]
    [SerializeField] private float padding;
    
-   
    public void SetGridMatrix(int rows, int columns)
    {
       float xMid = (columns - 1) * padding * 0.5f;

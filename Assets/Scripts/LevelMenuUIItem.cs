@@ -25,7 +25,7 @@ public class LevelMenuUIItem : MonoBehaviour
       int rows = int.Parse(rowText.text);
       int columns = int.Parse(columnText.text);
       
-      GridManager.Instance.SetGridMatrix(rows, columns);
+      LevelManager.Instance.SetCurrentRowsAndColumns(rows, columns);
       CardManager.Instance.rows = rows;
       CardManager.Instance.columns = columns;
    }

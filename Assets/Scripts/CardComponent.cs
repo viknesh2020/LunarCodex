@@ -23,7 +23,7 @@ public class CardComponent : MonoBehaviour
         isTurned = true;
         yield return new WaitForEndOfFrame();
         AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         AnimationManager.Instance.SmoothRotateYReverse(transform, 0.5f);
         isTurned = false;
     }
@@ -32,8 +32,13 @@ public class CardComponent : MonoBehaviour
     {
         if(isTurned) return;
         isTurned = true;
-        CardManager.Instance.OnCardTapped(this);
         AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
+        Invoke("DelayTapResponse", 0.5f);
+    }
+
+    private void DelayTapResponse()
+    {
+        CardManager.Instance.OnCardTapped(this);
     }
 
     public void SetCardValue(int value)
@@ -47,5 +52,15 @@ public class CardComponent : MonoBehaviour
         isMatched = true;
         Vector3 targetScale = initialScale * 1.2f;
         AnimationManager.Instance.ScaleUpAndShrink(transform, targetScale, 0.2f, 0.5f);
+    }
+
+    public IEnumerator CardNotMatched()
+    {
+        yield return new WaitForEndOfFrame();
+        isTurned = false;
+        AnimationManager.Instance.ShakeObject(transform, 0.75f, 0.1f);
+        yield return new WaitForSeconds(0.5f);
+        AnimationManager.Instance.SmoothRotateYReverse(transform, 0.5f);
+        yield return null;
     }
 }

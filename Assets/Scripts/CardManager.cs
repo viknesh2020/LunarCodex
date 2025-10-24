@@ -56,12 +56,6 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         cardPool.Add(card);
     }
 
-    public void SetCardValuePair()
-    {
-        
-       
-    }
-
     public List<int> GeneratePairedCardValues(int numberOfPairs)
     {
         List<int> cardValues = new List<int>();
@@ -98,6 +92,8 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
             else
             {
                 Debug.Log("No Match.");
+                StartCoroutine(card1.GetComponent<CardComponent>().CardNotMatched());
+                StartCoroutine(card2.GetComponent<CardComponent>().CardNotMatched());
                 comboCount = 0;
                 lastMatchedCard = null;
             }
@@ -108,8 +104,8 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
 
     private void ProcessSuccessfulMatch(CardComponent card1, CardComponent card2)
     {
-        // card1.SetMatched();
-        // card2.SetMatched();
+        card1.GetComponent<CardComponent>().CardMatched();
+        card2.GetComponent<CardComponent>().CardMatched();
 
         int currentMatchScore = baseMatchScore;
 
