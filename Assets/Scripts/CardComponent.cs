@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class CardComponent : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class CardComponent : MonoBehaviour
     {
         if(isTurned) return;
         isTurned = true;
+        ScoreManager.Instance.SetTurnsCount();
         AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
         Invoke("DelayTapResponse", 0.5f);
     }

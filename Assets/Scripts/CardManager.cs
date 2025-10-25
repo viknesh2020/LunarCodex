@@ -15,8 +15,8 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
     public GameObject cardPrefab;
 
     [Header("Scoring")]
-    public int baseMatchScore = 100;
-    public int comboBonus = 50;
+    public int baseMatchScore = 10;
+    public int comboBonus = 20;
 
     private List<CardComponent> cardPool = new List<CardComponent>();
 
@@ -116,6 +116,7 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         card1.GetComponent<CardComponent>().CardMatched();
         card2.GetComponent<CardComponent>().CardMatched();
         
+        ScoreManager.Instance.SetMatchesCount();
         cardCount = cardCount-2;    //Check if all cards are turned and matched.
         
         if (cardCount <= 0)
@@ -128,17 +129,19 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         if (lastMatchedCard != null)
         {
             comboCount++;
+            ScoreManager.Instance.SetComboCount(comboCount);
             currentMatchScore += comboBonus * comboCount;
             Debug.Log($"COMBO x{comboCount}! Bonus: +{comboBonus * comboCount}");
         }
         else
         {
             comboCount = 0;
+            ScoreManager.Instance.ResetComboCount();
         }
         
         score += currentMatchScore;
         Debug.Log($"Score: {score}");
-
+        ScoreManager.Instance.SetScore(score);
         lastMatchedCard = card1;
     }
     
