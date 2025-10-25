@@ -10,14 +10,21 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
     public TMP_Text matchesText;
     public TMP_Text scoreText;
     public TMP_Text comboText;
-    
-    
-    public int TurnsCount {get; private set; }
+    [HideInInspector] public int TurnsCount; 
     [HideInInspector] public int matchesCount;
     [HideInInspector] public int comboCount;
     [HideInInspector] public int currentMatchScore;
 
     private void Awake()
+    {
+        ResetAllStats();
+    }
+    public int GetCurrentScore()
+    {
+        return currentMatchScore;
+    }
+    
+    public void ResetAllStats()
     {
         ResetTurnsCount();
         ResetMatchesCount();
