@@ -7,17 +7,22 @@ using Unity.VisualScripting;
 
 public class CardManager : MonoBehaviourSingleton<CardManager>
 {
-    public List<GameObject> cards = new List<GameObject>();
+    public List<CardComponent> cards = new List<CardComponent>();
+    
+    [HideInInspector]
     public int rows;
+    [HideInInspector]
     public int columns;
     
     [Header("Card Settings")]
     public GameObject cardPrefab;
-
+    [SerializeField] private Transform gridParent;
+    
     [Header("Scoring")]
     public int baseMatchScore = 10;
     public int comboBonus = 20;
-
+    
+    [SerializeField]
     private List<CardComponent> cardPool = new List<CardComponent>();
 
     private List<CardComponent> currentlyFlippedCards = new List<CardComponent>();
@@ -33,9 +38,18 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
 
     public void DestroyCards()
     {
-        foreach(GameObject card in cards) 
+        foreach(CardComponent card in cards) 
         {
-            Destroy(card);
+            Destroy(card.gameObject);
+        }
+        cards.Clear();
+    }
+    
+    public void ReturnAllCardsToPool()
+    {
+        foreach(CardComponent card in cards) 
+        {
+            ReturnCardToPool(card);
         }
         cards.Clear();
     }
@@ -59,11 +73,15 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         return cardToUse;
     }
 
+    //Added card.ResetCard() and re-parenting
     public void ReturnCardToPool(CardComponent card)
     {
+        card.ResetCard(); // Reset state before pooling
         card.gameObject.SetActive(false);
+        card.transform.SetParent(transform); // Park it under the CardManager
         cardPool.Add(card);
     }
+
 
     public List<int> GeneratePairedCardValues(int numberOfPairs)
     {

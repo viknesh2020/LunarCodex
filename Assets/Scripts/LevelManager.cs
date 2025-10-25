@@ -87,6 +87,7 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    public void SetBackToMainMenu()
    {
       levelCompleteUI.SetActive(false);
+      CardManager.Instance.ReturnAllCardsToPool();
       Initialize.Instance.BackToMainMenu();
    }
 

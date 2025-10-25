@@ -12,10 +12,13 @@ public class CardComponent : MonoBehaviour
     public bool isMatched = false;
 
     private Vector3 initialScale;
-
-    private void Start()
+    
+    private void Awake()
     {
         initialScale = transform.localScale;
+    }
+    private void OnEnable()
+    {
         StartCoroutine(PrepareCard());
     }
 
@@ -67,5 +70,16 @@ public class CardComponent : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         AnimationManager.Instance.SmoothRotateYReverse(transform, 0.5f);
         yield return null;
+    }
+    
+    // Added ResetCard method
+    public void ResetCard()
+    {
+        isTurned = false;
+        isMatched = false;
+        transform.localRotation = Quaternion.identity; // Reset rotation
+        transform.localScale = initialScale;      // Reset scale
+        cardValue = -1; // Reset value
+        cardValueText.text = ""; // Reset text
     }
 }

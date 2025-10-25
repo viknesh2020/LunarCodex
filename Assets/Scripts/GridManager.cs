@@ -5,12 +5,12 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
 {
    [SerializeField] private Transform gridParent;
    [SerializeField] private Camera orthoCam;
-   [SerializeField] private GameObject cardGo;
    [Range(0.1f, 2f)]
    [SerializeField] private float padding;
    
    public void SetGridMatrix(int rows, int columns)
    {
+      CardManager.Instance.ReturnAllCardsToPool();
       float xMid = (columns - 1) * padding * 0.5f;
       float yMid = (rows - 1) * padding * 0.5f;
       
@@ -24,11 +24,14 @@ public class GridManager : MonoBehaviourSingleton<GridManager>
             int shuffledIndex = r * columns + c;
             if(shuffledIndex >=cardValuesList.Count) break;
             
-            GameObject newCard = Instantiate(cardGo, gridParent);
-            newCard.transform.localPosition = new Vector3(c * padding - xMid, r * padding - yMid, 0);
-            CardManager.Instance.cards.Add(newCard);
+            //Object pooling for better performance. Avoided destroying and instantiating multiple
+            //gameobjects, which increases the GC spike.
+            CardComponent cardComponent = CardManager.Instance.GetCardFromPool();
+            cardComponent.transform.SetParent(gridParent);
+            cardComponent.transform.localPosition = new Vector3(c * padding - xMid, r * padding - yMid, 0);
             
-            CardComponent cardComponent = newCard.GetComponent<CardComponent>();
+            //Add CardComponent to the list
+            CardManager.Instance.cards.Add(cardComponent);
             cardComponent.SetCardValue(cardValuesList[shuffledIndex]);
          }
       }
