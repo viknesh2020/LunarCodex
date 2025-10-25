@@ -26,6 +26,7 @@ public class Initialize : MonoBehaviourSingleton<Initialize>
     {
         mainMenu.SetActive(true);
         levelMenu.SetActive(false);
+        if(gameMenu.activeSelf) gameMenu.SetActive(false);
     }
 
     public void ProceedToGame()

@@ -116,11 +116,11 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         card1.GetComponent<CardComponent>().CardMatched();
         card2.GetComponent<CardComponent>().CardMatched();
         
-        cardCount = cardCount-2;
-
+        cardCount = cardCount-2;    //Check if all cards are turned and matched.
+        
         if (cardCount <= 0)
         {
-            Debug.Log("All cards have been flipped");
+           LevelManager.Instance.SetLevelComplete();
         }
         
         int currentMatchScore = baseMatchScore;
@@ -141,4 +141,6 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
 
         lastMatchedCard = card1;
     }
+    
+    public void ResetCardCount() => cardCount = 0;
 }

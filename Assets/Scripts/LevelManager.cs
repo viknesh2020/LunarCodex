@@ -12,6 +12,11 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    public GameObject levelMenuUIObject;
    public RectTransform levelMenuUIParent;
    public Button proceedToGame;
+   public GameObject levelCompleteUI;
+
+   [Header("Level Complete Buttons")] public Button homeButton;
+   public Button retryButton;
+   public Button nextLevelButton;
    
    private List<Button> levelUICardButtons = new List<Button>();
    private int currentRows;
@@ -19,9 +24,15 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
 
    private void Awake()
    {
+      levelCompleteUI.SetActive(false);
       GridValidation();
       PopulateLevelMenu();
+      
+      //Button event subscriptions, to avoid manually plugging them in.
       proceedToGame.onClick.AddListener(SwitchToGame);
+      homeButton.onClick.AddListener(SetBackToMainMenu);
+      retryButton.onClick.AddListener(RetryLevel);
+      nextLevelButton.onClick.AddListener(NextLevel);
    }
 
    private void GridValidation()
@@ -67,5 +78,27 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
       currentRows = rows;
       currentColumns = columns;
    }
-   
+   public void SetLevelComplete()
+   {
+      levelCompleteUI.SetActive(true);
+      Debug.Log("LevelComplete from level manager");
+   }
+
+   public void SetBackToMainMenu()
+   {
+      levelCompleteUI.SetActive(false);
+      Initialize.Instance.BackToMainMenu();
+   }
+
+   public void RetryLevel()
+   {
+      levelCompleteUI.SetActive(false);
+      CardManager.Instance.ResetCardCount();
+      SwitchToGame();
+   }
+
+   public void NextLevel()
+   {
+      levelCompleteUI.SetActive(false);
+   }
 }
