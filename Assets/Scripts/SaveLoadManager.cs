@@ -65,7 +65,7 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
         }
         else
         {
-            Debug.Log("No save file found. Initializing new save data.");
+            //Debug.Log("No save file found. Initializing new save data.");
             InitializeNewSave();
         }
         OnDataLoaded?.Invoke();
@@ -85,7 +85,7 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
         {
             string json = JsonUtility.ToJson(gameSaveData, true); 
             File.WriteAllText(SaveFilePath, json);
-            Debug.Log($"Game data saved to {SaveFilePath}");
+            //Debug.Log($"Game data saved to {SaveFilePath}");
         }
         catch (Exception e)
         {
@@ -100,16 +100,13 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
             try
             {
                 File.Delete(SaveFilePath);
-                Debug.Log("Save file deleted.");
+                //Debug.Log("Save file deleted.");
             }
             catch (Exception e)
             {
                 Debug.LogError($"Failed to delete save file: {e.Message}");
             }
         }
-
-        /*InitializeNewSave();
-        OnDataLoaded?.Invoke();*/
     }
 
     public LevelSaveData GetLevelData(int levelId)
@@ -137,7 +134,7 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
             {
                 gameSaveData.allLevelData.Remove(existingData);
                 gameSaveData.allLevelData.Add(newLevelData);
-                Debug.Log($"Updating high score for level {newLevelData.levelId}");
+                //Debug.Log($"Updating high score for level {newLevelData.levelId}");
             }
             else
             {
@@ -148,7 +145,7 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
         else
         {
             gameSaveData.allLevelData.Add(newLevelData);
-            Debug.Log($"Saving new entry for level {newLevelData.levelId}");
+            //Debug.Log($"Saving new entry for level {newLevelData.levelId}");
         }
 
         SaveGame();

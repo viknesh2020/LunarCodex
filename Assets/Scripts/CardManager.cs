@@ -112,12 +112,10 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
 
             if (card1.cardValue == card2.cardValue)
             {
-                Debug.Log($"Match Found! Value: {card1.cardValue}");
-                ProcessSuccessfulMatch(card1, card2);
+               ProcessSuccessfulMatch(card1, card2);
             }
             else
             {
-                Debug.Log("No Match.");
                 StartCoroutine(card1.GetComponent<CardComponent>().CardNotMatched());
                 StartCoroutine(card2.GetComponent<CardComponent>().CardNotMatched());
                 comboCount = 0;
@@ -149,7 +147,7 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
             comboCount++;
             ScoreManager.Instance.SetComboCount(comboCount);
             currentMatchScore += comboBonus * comboCount;
-            Debug.Log($"COMBO x{comboCount}! Bonus: +{comboBonus * comboCount}");
+            //Debug.Log($"COMBO x{comboCount}! Bonus: +{comboBonus * comboCount}");
         }
         else
         {
@@ -158,7 +156,6 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         }
         
         score += currentMatchScore;
-        Debug.Log($"Score: {score}");
         ScoreManager.Instance.SetScore(score);
         lastMatchedCard = card1;
     }

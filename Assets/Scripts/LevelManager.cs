@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    public RectTransform levelMenuUIParent;
    public Button proceedToGame;
    public GameObject levelCompleteUI;
+   public GameObject gameOverUI;
 
    [Header("Level Complete Buttons")] 
    public Button homeButton;
@@ -24,11 +25,13 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    private int currentColumns;
 
    private int currentLevelId; // Store the ID of the level being played
-   private List<LevelMenuUIItem> levelUIItems = new List<LevelMenuUIItem>(); 
+   private List<LevelMenuUIItem> levelUIItems = new List<LevelMenuUIItem>();
+   private int currentLevelUIIndex = 0;
 
    private void Awake()
    {
       levelCompleteUI.SetActive(false);
+      gameOverUI.SetActive(false);
       GridValidation();
       PopulateLevelMenu();
       
@@ -111,8 +114,14 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    }
    public void SetLevelComplete()
    {
-      levelCompleteUI.SetActive(true);
-      Debug.Log("LevelComplete from level manager");
+      if (currentLevelUIIndex >= levelUIItems.Count)
+      {
+         Invoke(nameof(DelayedGameComplete), 0.75f);
+      }
+      else
+      {
+         Invoke(nameof(DelayedLevelComplete), 0.75f);
+      }
       
       // --- ADDED: SAVE LOGIC ---
       int starRating = CalculateStarRating();
@@ -130,6 +139,17 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
       // Send data to the manager, which will handle saving if score is new high
       SaveLoadManager.Instance.UpdateLevelData(levelData);
       // --- END SAVE LOGIC ---
+   }
+
+   public void DelayedLevelComplete()
+   {
+      levelCompleteUI.SetActive(true);
+   }
+
+   public void DelayedGameComplete()
+   {
+      //Game Completed Screen
+      gameOverUI.SetActive(true);
    }
    
    private int CalculateStarRating()
@@ -165,6 +185,30 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    {
       levelCompleteUI.SetActive(false);
       CardManager.Instance.ReturnAllCardsToPool();
+      
+      //Enable access to the next level UI card.
+      if (currentLevelUIIndex < levelUICardButtons.Count)
+      {
+         //Call next level.
+         LevelMenuUIItem uiItem = levelUIItems[currentLevelUIIndex];
+         uiItem.SetGridDataForGame();
+         SwitchToGame();
+      }
+      else
+      {
+        nextLevelButton.gameObject.SetActive(false);
+      }
+   }
+
+   public void SetCurrentLevelUIIndex(int index)
+   {
+      currentLevelUIIndex = index;
+      if(gameOverUI.activeInHierarchy) gameOverUI.SetActive(false);
+   }
+
+   public void QuitGame()
+   {
+      Application.Quit();
    }
    
    private void OnDestroy()

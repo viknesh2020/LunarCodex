@@ -70,10 +70,8 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
 
     public void SetScore(int score)
     {
-        Debug.Log("Received Score: " + score);
         currentMatchScore = score;
         scoreText.text = score.ToString();
-        Debug.Log("Score in string" +scoreText.text);
     }
 
     public void ResetScore()
