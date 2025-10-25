@@ -5790,7 +5790,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridParent: {fileID: 533164029}
   orthoCam: {fileID: 1961422542}
-  padding: 1.5
+  paddingTop: 0.5
+  paddingBottom: 2.5
+  paddingLeft: 0.5
+  paddingRight: 0.5
+  cardBaseSize: 1
+  cardSizeFactor: 0.9
 --- !u!1 &1591144993
 GameObject:
   m_ObjectHideFlags: 0
