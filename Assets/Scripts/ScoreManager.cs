@@ -38,6 +38,12 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
         turnsText.text = TurnsCount.ToString();
     }
 
+    public void LoadTurnsCount(int turnsCount)
+    {
+        turnsText.text = turnsCount.ToString();
+        TurnsCount = turnsCount;
+    }
+
     public void ResetTurnsCount()
     {
         TurnsCount = 0;
@@ -50,6 +56,12 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
         matchesText.text = matchesCount.ToString();
     }
 
+    public void LoadMatchesCount(int mtcsCount)
+    {
+        matchesText.text = matchesCount.ToString();
+        matchesCount = mtcsCount;
+    }
+
     public void ResetMatchesCount()
     {
         matchesCount = 0;
@@ -58,8 +70,10 @@ public class ScoreManager : MonoBehaviourSingleton<ScoreManager>
 
     public void SetScore(int score)
     {
+        Debug.Log("Received Score: " + score);
         currentMatchScore = score;
         scoreText.text = score.ToString();
+        Debug.Log("Score in string" +scoreText.text);
     }
 
     public void ResetScore()

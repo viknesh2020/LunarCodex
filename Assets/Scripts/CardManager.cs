@@ -44,20 +44,6 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         }
         cards.Clear();
     }
-    public void ResetLevelStats()
-    {
-        score = 0;
-        comboCount = 0;
-        lastMatchedCard = null;
-        currentlyFlippedCards.Clear();
-
-        if (ScoreManager.Instance != null)
-        {
-            ScoreManager.Instance.ResetScore();
-            ScoreManager.Instance.ResetComboCount();
-        }
-    }
-    
     public void ReturnAllCardsToPool()
     {
         foreach(CardComponent card in cards) 

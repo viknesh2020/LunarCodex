@@ -25,7 +25,7 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
 {
     public static event Action OnDataLoaded;
 
-    private GameSaveData gameSaveData;
+    public GameSaveData gameSaveData;
     private const string SaveFileName = "saveData.json";
 
     public string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
@@ -48,7 +48,9 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
             {
                 string json = File.ReadAllText(SaveFilePath);
                 gameSaveData = JsonUtility.FromJson<GameSaveData>(json);
-                Debug.Log($"Save file loaded successfully from {SaveFilePath}");
+                
+                int loadedScore = gameSaveData.allLevelData[0].score;
+                ScoreManager.Instance.SetScore(loadedScore);
 
                 if (gameSaveData.allLevelData == null)
                 {
@@ -66,7 +68,6 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
             Debug.Log("No save file found. Initializing new save data.");
             InitializeNewSave();
         }
-
         OnDataLoaded?.Invoke();
     }
 
@@ -107,8 +108,8 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
             }
         }
 
-        InitializeNewSave();
-        OnDataLoaded?.Invoke();
+        /*InitializeNewSave();
+        OnDataLoaded?.Invoke();*/
     }
 
     public LevelSaveData GetLevelData(int levelId)

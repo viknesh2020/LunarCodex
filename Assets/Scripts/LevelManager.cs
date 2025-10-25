@@ -63,21 +63,6 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
       levelUIItems.Clear(); 
       levelUICardButtons.Clear();
       
-      /*for (int i = 0; i < levelData.levelDataItems.Length; i++)
-      {
-         GameObject levelMenuCard = Instantiate(levelMenuUIObject, levelMenuUIParent.transform);
-         levelMenuCard.GetComponent<LevelMenuUIItem>().levelNameText.text = levelData.levelDataItems[i].levelName;
-         levelMenuCard.GetComponent<LevelMenuUIItem>().rowText.text = levelData.levelDataItems[i].rows.ToString();
-         levelMenuCard.GetComponent<LevelMenuUIItem>().columnText.text = levelData.levelDataItems[i].columns.ToString();
-         var starLevels = levelMenuCard.GetComponent<LevelMenuUIItem>().starIcons;
-         foreach (var star in starLevels)
-         {
-            star.color = levelData.levelDataItems[i].normalColor;
-         }
-         
-         levelUICardButtons.Add(levelMenuCard.GetComponent<Button>());
-      }*/
-      
       for (int i = 0; i < levelData.levelDataItems.Length; i++)
       {
          GameObject levelMenuCard = Instantiate(levelMenuUIObject, levelMenuUIParent.transform);
@@ -115,8 +100,6 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    
    private void SwitchToGame()
    {
-      ScoreManager.Instance.ResetAllStats();
-      CardManager.Instance.ResetLevelStats(); 
       Initialize.Instance.ProceedToGame();
       GridManager.Instance.SetGridMatrix(currentRows, currentColumns);
    }
@@ -165,7 +148,6 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    {
       levelCompleteUI.SetActive(false);
       ScoreManager.Instance.ResetAllStats();
-      CardManager.Instance.ResetLevelStats();
       CardManager.Instance.ReturnAllCardsToPool();
       Initialize.Instance.BackToMainMenu();
    }
@@ -175,7 +157,6 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
       levelCompleteUI.SetActive(false);
       ScoreManager.Instance.ResetAllStats();
       CardManager.Instance.ResetCardCount();
-      CardManager.Instance.ResetLevelStats();
       CardManager.Instance.ReturnAllCardsToPool();
       SwitchToGame();
    }

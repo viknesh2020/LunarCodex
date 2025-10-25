@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class LevelMenuUIItem : MonoBehaviour
@@ -73,6 +74,23 @@ public class LevelMenuUIItem : MonoBehaviour
    {
       int rows = int.Parse(rowText.text);
       int columns = int.Parse(columnText.text);
+
+      LevelSaveData savedData = SaveLoadManager.Instance.GetLevelData(levelId);
+
+      if (savedData != null)
+      {
+         int loadedScore = savedData.score;
+         ScoreManager.Instance.SetScore(loadedScore);
+
+         int loadedTurnCount = savedData.turnsCount;
+         ScoreManager.Instance.LoadTurnsCount(loadedTurnCount);
+      
+         int loadedMatchesCount = savedData.matchesCount;
+         ScoreManager.Instance.LoadMatchesCount(loadedMatchesCount);
+      
+         int comboCount = savedData.comboCount;
+         ScoreManager.Instance.SetComboCount(comboCount);
+      }
       
       LevelManager.Instance.SetCurrentRowsAndColumns(rows, columns, levelId);
       CardManager.Instance.rows = rows;
