@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class LevelMenuUIItem : MonoBehaviour
@@ -15,6 +13,10 @@ public class LevelMenuUIItem : MonoBehaviour
    public List<Image> starIcons = new List<Image>();
    
    private Button _thisButton;
+   private int levelIndex;
+
+   private int rows;
+   private int columns;
    
    [Header("Star Colors")]
    public Color starAchievedColor = Color.yellow; // The color for an earned star
@@ -28,13 +30,17 @@ public class LevelMenuUIItem : MonoBehaviour
       _thisButton.onClick.AddListener(SetGridDataForGame);
    }
    
-   public void Initialize(int id, string levelName, int rows, int columns, Color normalColor)
+   public void Initialize(int id, string levelName, int rows, int columns, Color normalColor, int index)
    {
+      this.rows = rows;
+      this.columns = columns;
+      
       levelId = id;
       levelNameText.text = levelName;
       rowText.text = rows.ToString();
       columnText.text = columns.ToString();
       starNormalColor = normalColor; // Store the default color
+      this.levelIndex = index;
         
       // Set initial star color to default
       foreach (var star in starIcons)
@@ -73,10 +79,7 @@ public class LevelMenuUIItem : MonoBehaviour
 
    public void SetGridDataForGame()
    {
-      LevelManager.Instance.SetCurrentLevelUIIndex(levelId);
-      int rows = int.Parse(rowText.text);
-      int columns = int.Parse(columnText.text);
-     
+      LevelManager.Instance.SetCurrentLevelUIIndex(this.levelIndex);
       LevelSaveData savedData = SaveLoadManager.Instance.GetLevelData(levelId);
 
       if (savedData != null)
@@ -95,8 +98,8 @@ public class LevelMenuUIItem : MonoBehaviour
       }
       
       LevelManager.Instance.SetCurrentRowsAndColumns(rows, columns, levelId);
-      CardManager.Instance.rows = rows;
-      CardManager.Instance.columns = columns;
+      CardManager.Instance.rows = this.rows;
+      CardManager.Instance.columns = this.columns;
    }
 
    private void OnDisable()=> _thisButton.onClick.RemoveListener(SetGridDataForGame);

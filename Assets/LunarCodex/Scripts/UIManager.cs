@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Initialize : MonoBehaviourSingleton<Initialize>
+public class UIManager : MonoBehaviourSingleton<UIManager>
 {
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject levelMenu;
@@ -37,6 +37,7 @@ public class Initialize : MonoBehaviourSingleton<Initialize>
     {
         mainMenu.SetActive(false);
         levelMenu.SetActive(true);
+        ScoreManager.Instance.ResetScore();
     }
 
     public void BackToMainMenu()
@@ -44,6 +45,7 @@ public class Initialize : MonoBehaviourSingleton<Initialize>
         mainMenu.SetActive(true);
         levelMenu.SetActive(false);
         if(gameMenu.activeSelf) gameMenu.SetActive(false);
+        if(LevelManager.Instance.levelCompleteUI.activeSelf) LevelManager.Instance.levelCompleteUI.SetActive(false);
     }
 
     public void ProceedToGame()
@@ -56,7 +58,8 @@ public class Initialize : MonoBehaviourSingleton<Initialize>
     {
         gameMenu.SetActive(false);
         levelMenu.SetActive(true);
-        CardManager.Instance.DestroyCards();
+        if(LevelManager.Instance.levelCompleteUI.activeSelf) LevelManager.Instance.levelCompleteUI.SetActive(false);
+        CardManager.Instance.ReturnAllCardsToPool(); //Add spawned cards to the pool to reuse them.
     }
 
     public void LoadButtonClicked()
@@ -86,7 +89,7 @@ public class Initialize : MonoBehaviourSingleton<Initialize>
     
     private void ClearSaveData()
     {
-        Debug.Log("Clear Save button clicked.");
+        //Debug.Log("Clear Save button clicked.");
         SaveLoadManager.Instance.ClearSaveData();
     }
     

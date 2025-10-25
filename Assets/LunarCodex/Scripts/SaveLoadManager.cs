@@ -30,11 +30,6 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
 
     public string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject); 
-    }
-
     public bool DoesSaveFileExist()
     {
         return File.Exists(SaveFilePath);
@@ -48,9 +43,6 @@ public class SaveLoadManager : MonoBehaviourSingleton<SaveLoadManager>
             {
                 string json = File.ReadAllText(SaveFilePath);
                 gameSaveData = JsonUtility.FromJson<GameSaveData>(json);
-                
-                int loadedScore = gameSaveData.allLevelData[0].score;
-                ScoreManager.Instance.SetScore(loadedScore);
 
                 if (gameSaveData.allLevelData == null)
                 {

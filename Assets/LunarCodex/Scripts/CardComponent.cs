@@ -10,6 +10,7 @@ public class CardComponent : MonoBehaviour
     public int cardValue;
     public bool isTurned = false;
     public bool isMatched = false;
+    private bool isFlipping = false;
 
     private Vector3 initialScale;
     
@@ -34,17 +35,26 @@ public class CardComponent : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(isTurned) return;
-        isTurned = true;
+       // Prevent clicking if already turned, flipping, or matched
+        if (isTurned || isFlipping || isMatched) return;
+
+        StartCoroutine(FlipCardRoutine());
+    }
+    
+    private IEnumerator FlipCardRoutine()
+    {
+        isFlipping = true;
+        isTurned = true; // Set state immediately
+
         ScoreManager.Instance.SetTurnsCount();
         AudioManager.Instance.PlaySound(AudioManager.SoundType.Tap);
-        AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
-        Invoke("DelayTapResponse", 0.5f);
-    }
 
-    private void DelayTapResponse()
-    {
+        AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
+
+        yield return new WaitForSeconds(0.5f); // Wait for animation
+
         CardManager.Instance.OnCardTapped(this);
+        isFlipping = false;
     }
 
     public void SetCardValue(int value)

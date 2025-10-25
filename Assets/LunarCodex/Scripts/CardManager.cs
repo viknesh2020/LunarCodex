@@ -16,7 +16,6 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
     
     [Header("Card Settings")]
     public GameObject cardPrefab;
-    [SerializeField] private Transform gridParent;
     
     [Header("Scoring")]
     public int baseMatchScore = 10;
@@ -35,15 +34,7 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
     {
         cardCount = cards.Count;
     }
-
-    public void DestroyCards()
-    {
-        foreach(CardComponent card in cards) 
-        {
-            Destroy(card.gameObject);
-        }
-        cards.Clear();
-    }
+    
     public void ReturnAllCardsToPool()
     {
         foreach(CardComponent card in cards) 
@@ -116,8 +107,8 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
             }
             else
             {
-                StartCoroutine(card1.GetComponent<CardComponent>().CardNotMatched());
-                StartCoroutine(card2.GetComponent<CardComponent>().CardNotMatched());
+                StartCoroutine(card1.CardNotMatched());
+                StartCoroutine(card2.CardNotMatched());
                 comboCount = 0;
                 lastMatchedCard = null;
             }
@@ -128,8 +119,8 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
 
     private void ProcessSuccessfulMatch(CardComponent card1, CardComponent card2)
     {
-        card1.GetComponent<CardComponent>().CardMatched();
-        card2.GetComponent<CardComponent>().CardMatched();
+        card1.CardMatched();
+        card2.CardMatched();
         
         ScoreManager.Instance.SetMatchesCount();
         cardCount = cardCount-2;    //Check if all cards are turned and matched.

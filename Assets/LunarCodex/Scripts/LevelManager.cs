@@ -75,7 +75,7 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
          
          // Initialize it with data
          LevelDataItem data = levelData.levelDataItems[i];
-         uiItem.Initialize(data.id, data.levelName, data.rows, data.columns, data.normalColor);
+         uiItem.Initialize(data.id, data.levelName, data.rows, data.columns, data.normalColor, i);
          
          // Store reference for updates
          levelUIItems.Add(uiItem);
@@ -103,7 +103,7 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
    
    private void SwitchToGame()
    {
-      Initialize.Instance.ProceedToGame();
+      UIManager.Instance.ProceedToGame();
       GridManager.Instance.SetGridMatrix(currentRows, currentColumns);
    }
    public void SetCurrentRowsAndColumns(int rows, int columns, int levelId)
@@ -169,7 +169,7 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
       levelCompleteUI.SetActive(false);
       ScoreManager.Instance.ResetAllStats();
       CardManager.Instance.ReturnAllCardsToPool();
-      Initialize.Instance.BackToMainMenu();
+      UIManager.Instance.BackToMainMenu();
    }
 
    public void RetryLevel()
@@ -180,23 +180,25 @@ public class LevelManager : MonoBehaviourSingleton<LevelManager>
       CardManager.Instance.ReturnAllCardsToPool();
       SwitchToGame();
    }
-
+   
    public void NextLevel()
    {
       levelCompleteUI.SetActive(false);
       CardManager.Instance.ReturnAllCardsToPool();
       
+      int nextLevelIndex = currentLevelUIIndex + 1;
+      
       //Enable access to the next level UI card.
-      if (currentLevelUIIndex < levelUICardButtons.Count)
+      if (nextLevelIndex < levelUIItems.Count)
       {
          //Call next level.
-         LevelMenuUIItem uiItem = levelUIItems[currentLevelUIIndex];
+         LevelMenuUIItem uiItem = levelUIItems[nextLevelIndex];
          uiItem.SetGridDataForGame();
          SwitchToGame();
       }
       else
       {
-        nextLevelButton.gameObject.SetActive(false);
+         nextLevelButton.gameObject.SetActive(false);
       }
    }
 
