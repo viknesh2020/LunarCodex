@@ -34,6 +34,7 @@ public class CardComponent : MonoBehaviour
         if(isTurned) return;
         isTurned = true;
         ScoreManager.Instance.SetTurnsCount();
+        AudioManager.Instance.PlaySound(AudioManager.SoundType.Tap);
         AnimationManager.Instance.SmoothRotateY180(transform, 0.5f);
         Invoke("DelayTapResponse", 0.5f);
     }
@@ -53,6 +54,7 @@ public class CardComponent : MonoBehaviour
     {
         isMatched = true;
         Vector3 targetScale = initialScale * 1.2f;
+        AudioManager.Instance.PlaySound(AudioManager.SoundType.CardMatched);
         AnimationManager.Instance.ScaleUpAndShrink(transform, targetScale, 0.2f, 0.5f);
     }
 
@@ -60,6 +62,7 @@ public class CardComponent : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         isTurned = false;
+        AudioManager.Instance.PlaySound(AudioManager.SoundType.CardMismatched);
         AnimationManager.Instance.ShakeObject(transform, 0.75f, 0.1f);
         yield return new WaitForSeconds(0.5f);
         AnimationManager.Instance.SmoothRotateYReverse(transform, 0.5f);

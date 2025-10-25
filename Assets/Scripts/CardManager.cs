@@ -122,6 +122,7 @@ public class CardManager : MonoBehaviourSingleton<CardManager>
         if (cardCount <= 0)
         {
            LevelManager.Instance.SetLevelComplete();
+           AudioManager.Instance.PlaySound(AudioManager.SoundType.LevelComplete);
         }
         
         int currentMatchScore = baseMatchScore;
